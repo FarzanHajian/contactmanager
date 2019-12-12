@@ -1,24 +1,28 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Header from './components/Header'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Contacts from './components/Contacts';
 
 function App() {
+  let name = "Gholi";
+  let showHello = true;
+  let showBold = false;
+  let headerTag
+
+  if (showBold) {
+    headerTag = <h1>Hello {name}</h1>;
+  } else {
+    headerTag = <h6>Hello {name}</h6>;
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header branding="Contact Manager" />
+      <div className="container">
+        {showHello ? headerTag : null}
+        <Contacts/>
+      </div>
     </div>
   );
 }
