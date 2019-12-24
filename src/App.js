@@ -3,6 +3,8 @@ import './App.css';
 import Header from './components/Header'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Contacts from './components/Contacts';
+import { Provider } from './context'
+import AddContact from './components/AddContact';
 
 function App() {
   let name = "Gholi";
@@ -17,13 +19,16 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <Header branding="Contact Manager" />
-      <div className="container">
-        {showHello ? headerTag : null}
-        <Contacts/>
+    <Provider>
+      <div className="App">
+        <Header branding="Contact Manager" />
+        <div className="container">
+          {showHello ? headerTag : null}
+          <AddContact/>
+          <Contacts />
+        </div>
       </div>
-    </div>
+    </Provider>
   );
 }
 
