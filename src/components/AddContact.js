@@ -35,10 +35,10 @@ class AddContact extends Component {
             email,
             phone
         }
-        console.log(this.state)
-
         dispatch({ type: 'ADD_CONTACT', payload: newContact })
         this.setState({ name: '', email: '', phone: '', errors: {} })
+
+        this.props.history.push('/');
     }
 
     onChanged = (e) => this.setState({ [e.target.name]: e.target.value })
