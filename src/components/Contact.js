@@ -3,6 +3,7 @@ import propTypes from 'prop-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCoffee, faTimes, faCamera } from '@fortawesome/free-solid-svg-icons'
 import { Consumer } from '../context'
+import axios from 'axios'
 
 class Contact extends Component {
     state = {
@@ -21,7 +22,8 @@ class Contact extends Component {
     onShowDetails = () => this.setState({ showDetails: !this.state.showDetails });
 
     onDeleteClick = (contactId, dispatch) => {
-        dispatch({type:'DELETE_CONTACT', payload:contactId})
+        axios.delete(`https://jsonplaceholder.typicode.com/users/${contactId}`)
+            .then(res => dispatch({ type: 'DELETE_CONTACT', payload: contactId }));
     }
 
     render() {
@@ -36,7 +38,7 @@ class Contact extends Component {
                             {name}
                             <FontAwesomeIcon icon={showDetails ? faCoffee : faCamera} onClick={this.onShowDetails} style={{ cursor: 'pointer' }} className="ml-2" />
                             <FontAwesomeIcon icon={faTimes} onClick={this.onDeleteClick.bind(this, id, value.dispatch)}
-                                 style={{ cursor: 'pointer', float: 'right', color: 'red' }} />
+                                style={{ cursor: 'pointer', float: 'right', color: 'red' }} />
                         </h4>
                         {
                             showDetails ?
