@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import propTypes from 'prop-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCoffee, faTimes, faCamera } from '@fortawesome/free-solid-svg-icons'
+import { faCoffee, faTimes, faCamera, faPencilAlt } from '@fortawesome/free-solid-svg-icons'
 import { Consumer } from '../context'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 
 class Contact extends Component {
@@ -21,9 +22,9 @@ class Contact extends Component {
 
     onShowDetails = () => this.setState({ showDetails: !this.state.showDetails });
 
-    onDeleteClick = (contactId, dispatch) => {
-        axios.delete(`https://jsonplaceholder.typicode.com/users/${contactId}`)
-            .then(res => dispatch({ type: 'DELETE_CONTACT', payload: contactId }));
+    onDeleteClick = async (contactId, dispatch) => {
+        await axios.delete(`https://jsonplaceholder.typicode.com/users/${contactId}`);
+        dispatch({ type: 'DELETE_CONTACT', payload: contactId });
     }
 
     render() {
@@ -39,6 +40,9 @@ class Contact extends Component {
                             <FontAwesomeIcon icon={showDetails ? faCoffee : faCamera} onClick={this.onShowDetails} style={{ cursor: 'pointer' }} className="ml-2" />
                             <FontAwesomeIcon icon={faTimes} onClick={this.onDeleteClick.bind(this, id, value.dispatch)}
                                 style={{ cursor: 'pointer', float: 'right', color: 'red' }} />
+                            <Link to={`contact/edit/${id}`}>
+                                <FontAwesomeIcon icon={faPencilAlt} style={{ cursor: 'pointer', float: 'right', color: 'black', marginRight: '1rem' }} />
+                            </Link>
                         </h4>
                         {
                             showDetails ?
