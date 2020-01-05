@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import TextInputGroup from './TextInputGroup'
 import axios from 'axios'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { editContact } from '../redux_stuffs/actions/contactActions'
 
 class EditContact extends Component {
     state = {
@@ -22,7 +25,7 @@ class EditContact extends Component {
         });
     }
 
-    onSubmit = async (dispatch, e) => {
+    onSubmit = async (e) => {
         e.preventDefault();
 
         const { name, email, phone } = this.state;
@@ -48,8 +51,7 @@ class EditContact extends Component {
         }
 
         const res = await axios.put(`https://jsonplaceholder.typicode.com/users/${id}`, updContact);
-        dispatch({ type: 'UPDATE_CONTACT', payload: res.data });
-
+        this.props.editContact(res.data);
         this.setState({ name: '', email: '', phone: '', errors: {} })
 
         this.props.history.push('/');
@@ -64,7 +66,7 @@ class EditContact extends Component {
             <div className="card mb-3" style={{ backgroundColor: 'lavender', border: 'solid gray' }}>
                 <div className="card-header">Edit Contact</div>
                 <div className="card-body">
-                    <form /*onSubmit={this.onSubmit.bind(this, value.dispatch)}*/>
+                    <form onSubmit={this.onSubmit}>
                         <TextInputGroup label="Name" name="name" value={name} placeholder="Enter name ..." onChange={this.onChanged} error={errors.name} />
                         <TextInputGroup label="Email" name="email" value={email} placeholder="Enter email ..." type="email" onChange={this.onChanged} error={errors.email} />
                         <TextInputGroup label="Phone" name="phone" value={phone} placeholder="Enter phone ..." onChange={this.onChanged} error={errors.phone} />
@@ -76,4 +78,12 @@ class EditContact extends Component {
     }
 }
 
-export default EditContact
+EditContact.propTypes = {
+    editContact: PropTypes.func.isRequired
+}
+
+const mapStateToProps = () => ({
+    contacts: state.contact.contacts
+})
+
+export default connect(mapStateToProps, { editContact })(EditContact);
