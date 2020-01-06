@@ -3,7 +3,6 @@ import propTypes from 'prop-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCoffee, faTimes, faCamera, faPencilAlt } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
 import { connect } from 'react-redux'
 import { deleteContact } from '../redux_stuffs/actions/contactActions'
 

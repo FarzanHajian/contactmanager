@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import TextInputGroup from './TextInputGroup'
-import axios from 'axios'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { editContact } from '../redux_stuffs/actions/contactActions'
+import { getContact, updateContact } from '../redux_stuffs/actions/contactActions'
 
 class EditContact extends Component {
     state = {
@@ -15,14 +14,12 @@ class EditContact extends Component {
 
     async componentDidMount() {
         const { id } = this.props.match.params;
-        const res = await axios.get(`https://jsonplaceholder.typicode.com/users/${id}`);
+        this.props.getContact(id);
+    }
 
-        const contact = res.data;
-        this.setState({
-            name: contact.name,
-            email: contact.email,
-            phone: contact.phone
-        });
+    UNSAFE_componentWillReceiveProps(nextProps, nextState) {
+        const { name, email, phone } = nextProps.contact;
+        this.setState({ name, email, phone }); 
     }
 
     onSubmit = async (e) => {
@@ -45,15 +42,14 @@ class EditContact extends Component {
 
         const { id } = this.props.match.params;
         const updContact = {
+            id,
             name,
             email,
             phone
         }
+        this.props.updateContact(updContact);
 
-        const res = await axios.put(`https://jsonplaceholder.typicode.com/users/${id}`, updContact);
-        this.props.editContact(res.data);
         this.setState({ name: '', email: '', phone: '', errors: {} })
-
         this.props.history.push('/');
     }
 
@@ -79,11 +75,13 @@ class EditContact extends Component {
 }
 
 EditContact.propTypes = {
-    editContact: PropTypes.func.isRequired
+    contact: PropTypes.object.isRequired,
+    getContact: PropTypes.func.isRequired,
+    updateContact: PropTypes.func.isRequired
 }
 
-const mapStateToProps = () => ({
-    contacts: state.contact.contacts
+const mapStateToProps = (state) => ({
+    contact: state.contact.contact
 })
 
-export default connect(mapStateToProps, { editContact })(EditContact);
+export default connect(mapStateToProps, { getContact, updateContact })(EditContact);
